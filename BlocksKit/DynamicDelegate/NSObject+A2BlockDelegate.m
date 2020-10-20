@@ -327,6 +327,9 @@ typedef A2DynamicDelegate *(^A2GetDynamicDelegateBlock)(NSObject *, BOOL);
 	infoAsPtr = (__bridge void *)[propertyMap objectForKey:protocol];
 
 	IMP setterImplementation = imp_implementationWithBlock(^(NSObject *delegatingObject, id delegate) {
+        if ([NSStringFromClass(delegatingObject.class) isEqualToString:@"TUIEmojiSearchTextField"]) {
+            return; // 修复emoji search 存在的crash问题
+        }
 		A2DynamicDelegate *dynamicDelegate = getDynamicDelegate(delegatingObject, protocol, infoAsPtr, YES);
 		if ([delegate isEqual:dynamicDelegate]) {
 			delegate = nil;
